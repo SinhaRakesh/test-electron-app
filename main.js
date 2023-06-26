@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require("electron");
 const { spawn } = require("child_process");
 const path = require("path");
 const electronReload = require("electron-reload");
+const { autoUpdater } = require("electron-updater");
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -13,12 +14,16 @@ const createWindow = () => {
       //   allowRunningInsecureContent: false,
       contentSecurityPolicy:
         "default-src 'unsafe-inline'; connect-src http://localhost:3000",
+      // nodeIntegration: true,
+      // contextIsolation: false,
     },
   });
 
   win.webContents.openDevTools();
 
   win.loadFile("app/frontend/index.html");
+  // Check for updates
+  autoUpdater.checkForUpdatesAndNotify();
 };
 
 app.whenReady().then(() => {
@@ -65,4 +70,31 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
+});
+
+// Auto-update event listeners
+autoUpdater.on("update-available", (ua) => {
+  // Handle update available
+  console.log("new version available", ua);
+});
+
+autoUpdater.on("update-not-available", (una) => {
+  // Handle update not available
+  console.log("your app is up to date", una);
+});
+
+autoUpdater.on("error", (error) => {
+  // Handle error
+  console.log("auto updater error ", error);
+});
+
+autoUpdater.on("download-progress", (progress) => {
+  // Handle download progress
+  console.log("download in progress ", progress);
+});
+
+autoUpdater.on("update-downloaded", () => {
+  // Handle update downloaded
+  console.log("updated downloaded");
+  autoUpdater.quitAndInstall();
 });

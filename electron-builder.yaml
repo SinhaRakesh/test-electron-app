@@ -1,0 +1,5 @@
+publish:
+  provider: github
+  owner: sinharakesh
+  repo: test-electron-app
+  token: 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

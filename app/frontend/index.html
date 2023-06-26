@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Electron App</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
+</head>
+
+<body>
+    <h1>Welcome to my Electron App!</h1>
+    <button id="fetchButton">Fetch Data from API</button>
+    <div id="apiResponse"></div>
+    <!-- <script src="renderer/index.js"></script> -->
+    <script nonce="123455">
+        const fetchDataFromAPI = async () => {
+            try {
+                const response = await fetch('http://localhost:3000');
+                if (!response.ok) {
+                    throw new Error('API request failed');
+                }
+                const data = await response.json();
+
+                const response1 = await fetch('http://localhost:3000/api/users');
+                if (!response1.ok) {
+                    throw new Error('API request failed');
+                }
+                const data1 = await response1.json();
+
+
+                document.getElementById('apiResponse').innerText = JSON.stringify(data) + JSON.stringify(data1);
+                console.log(data, data1);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        document.getElementById('fetchButton').addEventListener('click', fetchDataFromAPI);
+    </script>
+</body>
+
+</html>

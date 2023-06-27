@@ -15,13 +15,13 @@
     <script nonce="123455">
         const fetchDataFromAPI = async () => {
             try {
-                const response = await fetch('http://localhost:3000');
+                const response = await fetch('http://localhost:4000');
                 if (!response.ok) {
                     throw new Error('API request failed');
                 }
                 const data = await response.json();
 
-                const response1 = await fetch('http://localhost:3000/api/users');
+                const response1 = await fetch('http://localhost:4000/api/users');
                 if (!response1.ok) {
                     throw new Error('API request failed');
                 }

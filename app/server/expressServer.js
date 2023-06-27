@@ -13,7 +13,7 @@ api.use("/", function (req, res, next) {
 // Other server configurations and routes
 // ...
 
-const port = 3000;
+const port = 4000;
 api.listen(port, () => {
   console.log(
     "\x1b[32m",

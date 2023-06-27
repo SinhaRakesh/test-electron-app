@@ -13,7 +13,7 @@ const createWindow = () => {
       //   webSecurity: false,
       //   allowRunningInsecureContent: false,
       contentSecurityPolicy:
-        "default-src 'unsafe-inline'; connect-src http://localhost:3000",
+        "default-src 'unsafe-inline'; connect-src http://localhost:4000; script-src 'self' http://localhost:4000;",
       // nodeIntegration: true,
       // contextIsolation: false,
     },

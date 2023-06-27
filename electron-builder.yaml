@@ -2,5 +2,4 @@ publish:
   provider: github
   owner: sinharakesh
   repo: test-electron-app
-  token: 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
-devMode: true
+  token: 

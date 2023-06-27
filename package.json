@@ -1,6 +1,6 @@
 {
   "name": "fullstack-electron-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "learning electron app",
   "main": "main.js",
   "scripts": {
@@ -23,7 +23,6 @@
   },
   "build": {
     "appId": "com.electron.pos",
-    "devMode": true,
     "directories": {
       "output": "release"
     },
@@ -41,7 +40,7 @@
         "provider": "github",
         "owner": "sinharakesh",
         "repo": "test-electron-app",
-        "token": "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"
+        "token": ""
       }
     ]
   }

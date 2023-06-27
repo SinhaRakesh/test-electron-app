@@ -3,8 +3,12 @@ const { spawn } = require("child_process");
 const path = require("path");
 const electronReload = require("electron-reload");
 const { autoUpdater } = require("electron-updater");
+const express = require("express");
+// const userApiRoute = require("./app/server/api.js");
 
 let win;
+let isAppReady = false;
+
 const createWindow = () => {
   win = new BrowserWindow({
     width: 800,
@@ -28,31 +32,64 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+  if (isAppReady) return;
+  isAppReady = true;
   console.log("\x1b[32m", "Electron Desktop APP Started !", "\x1b[0m");
 
   //launch server
   // Start the Express server
+  // const expressServer = spawn(process.execPath, [
+  //   path.join(process.cwd(), "app/server/expressServer.js"),
+  // ]);
+
+  /*
   const expressServer = spawn("node", ["app/server/expressServer.js"]);
+  expressServer.on("error", (err) => {
+    console.error("Error starting Express server:", err);
+    win.webContents.executeJavaScript('console.log("express server on error")');
+    const serializedError = JSON.stringify(err.message);
+    win.webContents.executeJavaScript(`console.error(${serializedError})`);
+  });
 
   expressServer.stdout.on("data", (data) => {
     console.log(`Express server output: ${data}`);
+    win.webContents.executeJavaScript(
+      'console.log("express server success output")'
+    );
   });
 
   expressServer.stderr.on("data", (data) => {
     console.error(`Express server error: ${data}`);
+    win.webContents.executeJavaScript('console.log("express server error")');
+    const serializedError = JSON.stringify(data);
+    win.webContents.executeJavaScript(`console.error(${serializedError})`);
   });
 
   expressServer.on("close", (code) => {
     console.log(`Express server process exited with code ${code}`);
+    win.webContents.executeJavaScript('console.log("express server on close")');
+    const serializedError = JSON.stringify(code);
+    win.webContents.executeJavaScript(`console.error(${serializedError})`);
   });
+  */
 
-  //   const express = require("express");
-  //   const server = express();
+  // manually loaded here
+
+  const api = express();
   // Define server routes and middleware functions
   // ...
-  //   server.listen(3000, () => {
-  //     console.log("Express server is running on port 3000");
-  //   });
+  // api.use("/api", userApiRoute);
+  api.use("/", function (req, res, next) {
+    res.send({ res: "express api " });
+  });
+
+  api.listen(4000, () => {
+    console.log(
+      "\x1b[32m",
+      `Express server is running on port 4000 `,
+      "\x1b[0m"
+    );
+  });
   //----------------------
 
   createWindow();
@@ -99,8 +136,8 @@ autoUpdater.on("update-not-available", (una) => {
 autoUpdater.on("error", (error) => {
   // Handle error
   console.log("new update error occure", error);
-  const serializedError = JSON.stringify(error);
   win.webContents.executeJavaScript('console.log("auto updater error ")');
+  const serializedError = JSON.stringify(error);
   win.webContents.executeJavaScript(`console.error(${serializedError})`);
 });
 

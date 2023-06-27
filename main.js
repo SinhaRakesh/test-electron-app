@@ -4,8 +4,9 @@ const path = require("path");
 const electronReload = require("electron-reload");
 const { autoUpdater } = require("electron-updater");
 
+let win;
 const createWindow = () => {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -55,9 +56,18 @@ app.whenReady().then(() => {
   //----------------------
 
   createWindow();
+
   electronReload(__dirname, {
     electron: path.join(__dirname, "node_modules", ".bin", "electron"),
   });
+
+  // console from frontend to backedn main.js file
+  // win.webContents.on("console-message", (event, level, message) => {
+  //   console.log(`Renderer console (${level}): ${message}`);
+  // });
+
+  // console from main.js to frontend devetool console
+  win.webContents.executeJavaScript('console.log("Message from main process")');
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -76,25 +86,38 @@ app.on("window-all-closed", () => {
 autoUpdater.on("update-available", (ua) => {
   // Handle update available
   console.log("new version available", ua);
+  win.webContents.executeJavaScript('console.log("new version available", ua)');
 });
 
 autoUpdater.on("update-not-available", (una) => {
   // Handle update not available
-  console.log("your app is up to date", una);
+
+  console.log("new update not available");
+  win.webContents.executeJavaScript(
+    'console.log("your app is up to date", una)'
+  );
 });
 
 autoUpdater.on("error", (error) => {
   // Handle error
-  console.log("auto updater error ", error);
+  console.log("new update error occure");
+  win.webContents.executeJavaScript(
+    'console.log("auto updater error ", error)'
+  );
 });
 
 autoUpdater.on("download-progress", (progress) => {
   // Handle download progress
-  console.log("download in progress ", progress);
+  console.log("downloading in progress");
+
+  win.webContents.executeJavaScript(
+    'console.log("download in progress ", progress)'
+  );
 });
 
 autoUpdater.on("update-downloaded", () => {
   // Handle update downloaded
-  console.log("updated downloaded");
+  console.log("new version downloaded");
+  win.webContents.executeJavaScript('console.log("updated downloaded")');
   autoUpdater.quitAndInstall();
 });

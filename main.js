@@ -86,33 +86,29 @@ app.on("window-all-closed", () => {
 autoUpdater.on("update-available", (ua) => {
   // Handle update available
   console.log("new version available", ua);
-  win.webContents.executeJavaScript('console.log("new version available", ua)');
+  win.webContents.executeJavaScript('console.log("new version available")');
 });
 
 autoUpdater.on("update-not-available", (una) => {
   // Handle update not available
 
   console.log("new update not available");
-  win.webContents.executeJavaScript(
-    'console.log("your app is up to date", una)'
-  );
+  win.webContents.executeJavaScript('console.log("your app is up to date")');
 });
 
 autoUpdater.on("error", (error) => {
   // Handle error
-  console.log("new update error occure");
-  win.webContents.executeJavaScript(
-    'console.log("auto updater error ", error)'
-  );
+  console.log("new update error occure", error);
+  const serializedError = JSON.stringify(error);
+  win.webContents.executeJavaScript('console.log("auto updater error ")');
+  win.webContents.executeJavaScript(`console.error(${serializedError})`);
 });
 
 autoUpdater.on("download-progress", (progress) => {
   // Handle download progress
   console.log("downloading in progress");
 
-  win.webContents.executeJavaScript(
-    'console.log("download in progress ", progress)'
-  );
+  win.webContents.executeJavaScript('console.log("download in progress ")');
 });
 
 autoUpdater.on("update-downloaded", () => {

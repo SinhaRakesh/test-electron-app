@@ -23,6 +23,7 @@
   },
   "build": {
     "appId": "com.electron.pos",
+    "devMode": true,
     "directories": {
       "output": "release"
     },

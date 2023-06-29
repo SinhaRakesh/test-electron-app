@@ -1,13 +1,18 @@
-const { app, BrowserWindow } = require("electron");
-const { spawn } = require("child_process");
+const { app, BrowserWindow, ipcMain, ipcRenderer } = require("electron");
+// const { spawn } = require("child_process");
 const path = require("path");
 const electronReload = require("electron-reload");
-const { autoUpdater } = require("electron-updater");
+const { autoUpdater,AppUpdater } = require("electron-updater");
 const express = require("express");
 // const userApiRoute = require("./app/server/api.js");
+const MainScreen = require("./screens/main/mainScreen");
+
 
 let win;
 let isAppReady = false;
+
+autoUpdater.autoDownload=false;
+autoUpdater.autoInstallOnAppQuit=true;
 
 const createWindow = () => {
   win = new BrowserWindow({
@@ -28,7 +33,6 @@ const createWindow = () => {
 
   win.loadFile("app/frontend/index.html");
   // Check for updates
-  autoUpdater.checkForUpdatesAndNotify();
 };
 
 app.whenReady().then(() => {
@@ -111,6 +115,8 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.on("window-all-closed", () => {

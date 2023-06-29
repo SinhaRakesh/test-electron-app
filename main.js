@@ -5,8 +5,6 @@ const electronReload = require("electron-reload");
 const { autoUpdater,AppUpdater } = require("electron-updater");
 const express = require("express");
 // const userApiRoute = require("./app/server/api.js");
-const MainScreen = require("./screens/main/mainScreen");
-
 
 let win;
 let isAppReady = false;
@@ -19,13 +17,13 @@ const createWindow = () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      // preload: path.join(__dirname, "./preload.js"),
       //   webSecurity: false,
       //   allowRunningInsecureContent: false,
       contentSecurityPolicy:
         "default-src 'unsafe-inline'; connect-src http://localhost:4000; script-src 'self' http://localhost:4000;",
       // nodeIntegration: true,
-      // contextIsolation: false,
+      contextIsolation: false
     },
   });
 
